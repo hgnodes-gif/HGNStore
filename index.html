@@ -1,168 +1,203 @@
-<!DOCTYPE html>
+# MCFleet-जैसी Store — GitHub Starter Template
+
+यह दस्तावेज़ एक पूर्ण *single-repo* starter template देता है जिससे आप **MCFleet जैसी Minecraft store / hosting storefront** GitHub पर बना कर GitHub Pages से होस्ट कर सकते हैं। नीचे दिए गए फाइल्स और दिशा-निर्देश सीधे कॉपी-पेस्ट करने के लिए तैयार हैं।
+
+---
+
+## फ़ाइलें (क्या क्या मिलेगा)
+
+1. `index.html` — मुख्य पेज (लैंडिंग + محصولات/प्लान्स कार्ड, navbar, footer)
+2. `styles.css` — सरल, responsive CSS (Tailwind न इस्तेमाल किया गया ताकि GitHub Pages पर सीधा चले)
+3. `script.js` — UI interaction: mobile menu, cart mockup, form handling
+4. `README.md` — Repo setup और deploy करने के स्टेप्स
+
+---
+
+## Quick usage (तेजी से शुरू करने के लिए)
+
+1. नया GitHub repo बनाएं (नाम: `mcfleet-store` या जो चाहें)।
+2. नीचे दी गई फाइलें अपने लोकल मशीन पर एक फोल्डर में बना लें और `git init` करके commit कर दें।
+3. GitHub पर remote add/push करें।
+4. Repo → Settings → Pages → `gh-pages` या `main` branch (root) select करके GitHub Pages enable करें।
+
+> पेज live होने में कुछ मिनट लग सकते हैं — GitHub Pages URL: `https://<your-username>.github.io/<repo-name>/`
+
+---
+
+## कस्टमाइज़ेशन सुझाव
+
+* Payment: Tebex/Stripe/Bambora इंटीग्रेशन के लिए buy buttons embed करें।
+* Backend: अगर order management चाहिए तो GitHub repo से अलग small server (Vercel/Netlify/AWS) जोड़ें या Google Forms + Zapier का उपयोग कर रखें।
+* Product catalogue: JSON फ़ाइल में रखकर JS से लोड कर सकते हैं ताकि product जोड़ना आसान हो।
+* Domain: GitHub Pages के साथ custom domain जोड़ें (DNS में CNAME जोड़ना होगा)
+
+---
+
+## Files: (copy these into files in your repo)
+
+### index.html
+
+```html
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HG NETWORK — Minecraft Server Store</title>
-  <style>
-    :root {
-      --light-blue: #3db4f2;
-      --dark-blue: #0e2433;
-      --text: #ffffff;
-      --card-bg: rgba(255,255,255,0.1);
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
-
-    body {
-      background: linear-gradient(135deg, var(--dark-blue), #1b3b52);
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      text-align: center;
-      padding: 20px;
-    }
-
-    header {
-      margin-bottom: 20px;
-    }
-
-    h1 {
-      font-size: 2.5rem;
-      color: var(--light-blue);
-      text-shadow: 0 0 20px var(--light-blue);
-    }
-
-    p {
-      font-size: 1rem;
-      margin-top: 10px;
-      color: #dbeafe;
-    }
-
-    .gamemodes {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 15px;
-      margin: 30px 0;
-    }
-
-    .mode {
-      background: var(--card-bg);
-      border: 1px solid var(--light-blue);
-      border-radius: 10px;
-      padding: 15px 30px;
-      backdrop-filter: blur(10px);
-      transition: 0.3s;
-    }
-
-    .mode:hover {
-      transform: scale(1.1);
-      background: rgba(61,180,242,0.3);
-    }
-
-    .username-box {
-      background: var(--card-bg);
-      padding: 20px;
-      border-radius: 10px;
-      width: 100%;
-      max-width: 400px;
-      box-shadow: 0 0 20px rgba(61,180,242,0.4);
-    }
-
-    input {
-      width: 80%;
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      margin-top: 10px;
-      text-align: center;
-      outline: none;
-    }
-
-    button {
-      background: var(--light-blue);
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      margin-top: 10px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background: #58c8ff;
-    }
-
-    footer {
-      margin-top: 30px;
-      font-size: 0.9rem;
-      color: #cfe8ff;
-    }
-
-    a {
-      color: var(--light-blue);
-      text-decoration: none;
-    }
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HG Network Store — MCFleet Style</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>Welcome To HG NETWORK</h1>
-    <p>Your Ultimate Minecraft Server Network</p>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="#">HG Network</a>
+      <nav class="nav">
+        <a href="#plans">Plans</a>
+        <a href="#features">Features</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <button id="mobile-menu-btn" class="hamburger">☰</button>
+    </div>
   </header>
 
-  <div class="gamemodes">
-    <div class="mode">💖 Lifesteal</div>
-    <div class="mode">⚔️ Practice</div>
-    <div class="mode">🌲 Survival</div>
-    <div class="mode">🛏️ Bedwars</div>
-  </div>
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>Welcome to HG Network — Minecraft Hosting & Store</h1>
+        <p>Fast, cheap, reliable servers — pay via Tebex/Stripe and start in minutes.</p>
+        <a class="cta" href="#plans">View Plans</a>
+      </div>
+    </section>
 
-  <div class="username-box">
-    <h2>Enter Your Minecraft Username</h2>
-    <input type="text" id="username" placeholder="Your Minecraft Username" />
-    <br />
-    <button onclick="saveUsername()">Submit</button>
-    <p id="response"></p>
-  </div>
+    <section id="plans" class="plans container">
+      <!-- Example product cards -->
+      <article class="plan">
+        <h3>Starter</h3>
+        <p>1 GB RAM • 24/7 Uptime • Instant Setup</p>
+        <div class="price">₹49 / month</div>
+        <button class="buy-btn" data-plan="Starter">Buy</button>
+      </article>
 
-  <footer>
-    <p>© 2025 HG NETWORK | Hosted on <a href="https://github.com/" target="_blank">GitHub Pages</a></p>
+      <article class="plan">
+        <h3>Pro</h3>
+        <p>4 GB RAM • Priority Support • DDoS Protection</p>
+        <div class="price">₹199 / month</div>
+        <button class="buy-btn" data-plan="Pro">Buy</button>
+      </article>
+
+      <article class="plan">
+        <h3>Enterprise</h3>
+        <p>Dedicated Instances • Custom IPs • SLA</p>
+        <div class="price">Contact</div>
+        <button class="buy-btn" data-plan="Enterprise">Contact Sales</button>
+      </article>
+    </section>
+
+    <section id="features" class="container features">
+      <h2>Why choose us?</h2>
+      <ul>
+        <li>Instant setup</li>
+        <li>Automatic backups</li>
+        <li>Panel: Pterodactyl / Multicraft (embed links to panel)</li>
+      </ul>
+    </section>
+
+    <section id="contact" class="container contact">
+      <h2>Contact / Order</h2>
+      <form id="order-form">
+        <input name="name" placeholder="Your name" required>
+        <input name="email" placeholder="Email" required>
+        <textarea name="message" placeholder="Details (server type, username)"></textarea>
+        <button type="submit">Send Order</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">© HG Network — Made with ❤️</div>
   </footer>
 
-  <script>
-    function saveUsername() {
-      const username = document.getElementById("username").value.trim();
-      const response = document.getElementById("response");
-
-      if (!username) {
-        response.innerText = "Please enter your username!";
-        response.style.color = "red";
-        return;
-      }
-
-      // Simulate saving to GitHub (for demo purpose)
-      localStorage.setItem("minecraftUsername", username);
-      response.innerText = `✅ Username '${username}' saved successfully!`;
-      response.style.color = "lightgreen";
-    }
-
-    window.onload = () => {
-      const saved = localStorage.getItem("minecraftUsername");
-      if (saved) {
-        document.getElementById("response").innerText = `Welcome back, ${saved}!`;
-      }
-    };
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
+```
+
+---
+
+### styles.css
+
+```css
+:root{--bg:#0b1020;--card:#0f1724;--accent:#7c3aed;--muted:#a0aec0}
+*{box-sizing:border-box}
+body{font-family:Inter,system-ui,Arial,sans-serif;margin:0;background:linear-gradient(180deg,#071029,#081225);color:#e6eef8}
+.container{max-width:1000px;margin:0 auto;padding:24px}
+.site-header{background:rgba(255,255,255,0.02);backdrop-filter:blur(6px)}
+.brand{font-weight:700;color:var(--accent);text-decoration:none}
+.nav{display:inline-block;margin-left:24px}
+.nav a{margin-right:12px;color:var(--muted);text-decoration:none}
+.hamburger{display:none}
+.hero{padding:64px 0}
+.hero h1{font-size:32px;margin:0 0 8px}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:18px}
+.plan{background:var(--card);padding:18px;border-radius:10px}
+.price{font-size:20px;margin-top:8px}
+.buy-btn{margin-top:12px;padding:8px 12px;border-radius:8px;border:0;background:var(--accent);color:white}
+.site-footer{padding:18px;text-align:center;color:var(--muted);margin-top:36px}
+@media(max-width:700px){.nav{display:none}.hamburger{display:inline-block}}
+```
+
+---
+
+### script.js
+
+```js
+// Minimal interactions: mobile menu + fake order submit
+document.getElementById('mobile-menu-btn').addEventListener('click', ()=>{
+  const nav = document.querySelector('.nav');
+  if(nav.style.display==='block') nav.style.display=''; else nav.style.display='block';
+});
+
+document.querySelectorAll('.buy-btn').forEach(b=>{
+  b.addEventListener('click', (e)=>{
+    const plan = e.currentTarget.dataset.plan;
+    alert('You chose: ' + plan + " — replace this with your Tebex/Stripe link or checkout flow.");
+  })
+});
+
+document.getElementById('order-form').addEventListener('submit', (e)=>{
+  e.preventDefault();
+  alert('Order sent — replace this with your server-side form handler or Zapier integration.');
+  e.target.reset();
+});
+```
+
+---
+
+### README.md
+
+```md
+# MCFleet-style Store — Starter
+
+This repository is a simple static storefront meant to be hosted on GitHub Pages.
+
+## How to deploy
+1. Create a new GitHub repo.
+2. Copy `index.html`, `styles.css`, `script.js` and `README.md` into it.
+3. Commit & push.
+4. Settings → Pages → choose `main` branch and `/ (root)` → Save.
+5. Open the provided GitHub Pages URL.
+
+## Next steps
+- Replace `alert()` in `script.js` with actual checkout links (Tebex/Stripe).
+- Add product JSON and admin editing (or use a headless CMS).
+- Add analytics (Fathom/Google Analytics) or tracking.
+```
+
+---
+
+## अगर आप चाहें तो मैं कर दूँ:
+
+* पूरा GitHub repo बना कर उसे आपके अकाउंट में init/PR करने के steps बता दूँ।
+* Tebex/Stripe buy-button integration कर दूँ (आपकी Tebex store link दें)।
+* Tailwind/React आधारित advanced version बनाऊँ।
+
+बताइए कौन सा ऑप्शन करना है — मैं template तैयार करके canvas में रख दिया है (ऊपर)।
